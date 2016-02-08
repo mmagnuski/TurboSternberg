@@ -1,0 +1,22 @@
+---
+# TODOs:
+# - [ ] add digit width
+
+# loads and trials
+loads: [2,4,6]
+trials_per_load: 10
+
+# times, currently in frames
+times:
+   digit: 10
+   inter: 20
+   wait: 120
+   response: 90
+   inter_trial: [0.75, 2]
+
+# keys for yes/no (mapping is randomized)
+resp_keys: [f, j]
+
+quit:
+   enable: True
+   button: q
