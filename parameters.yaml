@@ -27,6 +27,9 @@ fixation:
    shape: circle
    height: 0.5
    width: 0.1
+digits:
+   height: 5
+
 quit:
    enable: True
    button: q

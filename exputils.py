@@ -21,8 +21,6 @@ class SternbergExperiment(object):
 
 	def __init__(self, window, paramfile, frame_time=None):
 		self.window = window
-		self.digits = [visual.TextStim(window, text=str(x), height=10)
-				  for x in range(10)]
 		if frame_time == None:
 			self.frame_time = get_frame_time(window)
 		else:
@@ -57,6 +55,13 @@ class SternbergExperiment(object):
 		self.current_trial = 0
 
 		self.subject_id = 'test_subject'
+		self.create_stimuli()
+
+	def create_stimuli(self):
+		# create some stimuli
+		self.fix = fix(self.window, **self.settings['fixation'])
+		self.digits = [visual.TextStim(self.window, text=str(x),
+			height=self.settings['digits']['height']) for x in range(10)]
 
 	def run_trials(self, trials):
 		for t in trials:
