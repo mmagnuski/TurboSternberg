@@ -80,15 +80,23 @@ class SternbergExperiment(object):
 		probe = self.df.loc[trial, 'probe']
 		corr_resp = self.df.loc[trial, 'isin']
 
-		corr, rt = self.simple_trial(digits, probe, corr_resp)
+		# random times
+		fix_time, wait_time = [self.get_random_time(None, k)
+			for k in ['fix', 'wait']]
+
+		corr, rt = self.simple_trial(digits, probe, corr_resp,
+			fix_time=fix_time, wait_time=wait_time)
 
 		self.df.loc[trial,'ifcorrect'] = corr
 		self.df.loc[trial,'RT'] = rt
 
-	def simple_trial(self, digits, probe, corr_resp):
+	def simple_trial(self, digits, probe, corr_resp,
+		fix_time=None, wait_time=None):
+
+		self.show_fix(fix_time=fix_time)
 		self.show_digits(digits)
 		self.check_quit()
-		resp = self.wait_and_ask(probe)
+		resp = self.wait_and_ask(probe, wait_time=wait_time)
 		self.check_quit(key=resp)
 
 		# check response
@@ -121,9 +129,16 @@ class SternbergExperiment(object):
 			for t in range(self.times['inter']):
 				self.window.flip()
 
-	def wait_and_ask(self, ask_digit):
-		for d in range(self.times['wait']):
-			self.window.flip()
+	def wait_and_ask(self, ask_digit, wait_time=None):
+		wait_time = self.get_random_time(wait_time, 'wait')
+
+		if self.settings['fixation_during_wait']:
+			for d in range(wait_time):
+				self.fix.draw()
+				self.window.flip()
+		else:
+			for d in range(wait_time):
+				self.window.flip()
 
 		ask_digit = self.digits[ask_digit]
 		ask_digit.color = "yellow"

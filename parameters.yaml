@@ -5,6 +5,7 @@
 # loads and trials
 loads: [2,4,6]
 trials_per_load: 10
+fixation_during_wait: True
 
 # times
 # inter - czas odstępu między cyframi
