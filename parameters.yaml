@@ -6,12 +6,17 @@
 loads: [2,4,6]
 trials_per_load: 10
 
-# times, currently in frames
+# times
+# inter - czas odstępu między cyframi
+# wait - retention, przetrzymywanie cyfr w umyśle
+# response - max czas na odpowiedź
+# inter_trial - zakres czasu odstępu między trialami
 times:
-   digit: 10
-   inter: 20
-   wait: 120
-   response: 90
+   fix: [0.5, 0.75]
+   digit: 0.15
+   inter: 0.35
+   wait: [1.5, 2.5]
+   response: 1.5
    inter_trial: [0.75, 2]
 
 # keys for yes/no (mapping is randomized)

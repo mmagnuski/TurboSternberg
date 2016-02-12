@@ -1,6 +1,7 @@
 from __future__ import division, print_function
 
 import os
+import six
 import yaml
 import random
 
@@ -18,10 +19,14 @@ from psychopy import visual, event, core
 
 class SternbergExperiment(object):
 
-	def __init__(self, window, paramfile):
+	def __init__(self, window, paramfile, frame_time=None):
 		self.window = window
 		self.digits = [visual.TextStim(window, text=str(x), height=10)
 				  for x in range(10)]
+		if frame_time == None:
+			self.frame_time = get_frame_time(window)
+		else:
+			self.frame_time = frame_time
 
 		file_name = os.path.join(os.getcwd(), paramfile)
 		with open(file_name, 'r') as f:
@@ -30,8 +35,10 @@ class SternbergExperiment(object):
 		self.loads = settings['loads']
 		self.trials_per_load = settings['trials_per_load']
 
-		self.times = settings['times']
 		self.resp_keys = settings['resp_keys']
+		self.times = s2frames(settings['times'], self.frame_time)
+		self.times['inter_trial'] = settings['times']['inter_trial']
+		self.settings = settings
 
 		rnd = random.sample([True, False], 1)
 		self.resp_mapping = {self.resp_keys[0]: rnd}
@@ -126,6 +133,22 @@ class SternbergExperiment(object):
 		full_path = os.path.join(path, self.subject_id)
 		self.df.to_csv(full_path + '.csv')
 		self.df.to_excel(full_path + '.xls')
+
+
+def get_frame_time(win, frames=25):
+	frame_rate = win.getActualFrameRate(nIdentical = frames)
+	return 1.0 / frame_rate
+
+def s2frames(time_in_seconds, frame_time):
+	assert isinstance(time_in_seconds, dict)
+	time_in_frames = dict()
+	toframes = lambda x: int(round(x / frame_time))
+	for k, v in six.iteritems(time_in_seconds):
+		if isinstance(v, list):
+			time_in_frames[k] = map(toframes, v)
+		else:
+			time_in_frames[k] = toframes(v)
+	return time_in_frames
 
 
 def create_empty_df(nrows):
