@@ -50,6 +50,7 @@ class SternbergExperiment(object):
 		self.df = create_empty_df(len(self.loads) * self.trials_per_load)
 		load_df = generate_loads(self.loads, self.trials_per_load)
 		self.df.loc[:, load_df.columns] = load_df
+		self.df = self.df.set_index('trial', drop=True)
 
 		self.clock = core.Clock()
 		self.current_trial = 0
