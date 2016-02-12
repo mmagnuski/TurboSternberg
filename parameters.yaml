@@ -22,6 +22,11 @@ times:
 # keys for yes/no (mapping is randomized)
 resp_keys: [f, j]
 
+# fixation cross or circle, units are in degrees
+fixation:
+   shape: circle
+   height: 0.5
+   width: 0.1
 quit:
    enable: True
    button: q
