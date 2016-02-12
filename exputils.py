@@ -73,7 +73,7 @@ class SternbergExperiment(object):
 			self.show_trial(t)
 			break_time = random.uniform(self.times['inter_trial'][0],
 				self.times['inter_trial'][1]+0.0001)
-			core.wait(round(break_times, 3), 1))
+			core.wait(round(break_time, 3))
 
 	def show_trial(self, trial):
 		digits = list(map(int, self.df.loc[trial, 'digits'].split()))
