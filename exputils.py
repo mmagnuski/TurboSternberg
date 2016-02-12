@@ -71,6 +71,7 @@ class SternbergExperiment(object):
 	def run_trials(self, trials):
 		for t in trials:
 			self.show_trial(t)
+			self.window.flip()
 			break_time = random.uniform(self.times['inter_trial'][0],
 				self.times['inter_trial'][1]+0.0001)
 			core.wait(round(break_time, 3))
