@@ -38,7 +38,7 @@ class SternbergExperiment(object):
 		self.times['inter_trial'] = settings['times']['inter_trial']
 		self.settings = settings
 
-		rnd = random.sample([True, False], 1)
+		rnd = random.sample([True, False], 1)[0]
 		self.resp_mapping = {self.resp_keys[0]: rnd}
 		self.resp_mapping.update({self.resp_keys[1]: not rnd})
 
@@ -207,13 +207,15 @@ def s2frames(time_in_seconds, frame_time):
 	return time_in_frames
 
 
+# creating trials
+# ---------------
 def create_empty_df(nrows):
 	cols = ['trial', 'load', 'digits',
 			'probe', 'isin', 'ifcorrect', 'RT']
 	d = {'trial': list(range(1, nrows+1)),
 		 'load': 3, 'digits': "1 2 3",
 		 'probe': 2, 'isin': True,
-		 'ifcorrect': False, 'RT': 0.52361}
+		 'ifcorrect': 0, 'RT': 0.52361}
 	df = pd.DataFrame(d)
 	return df[cols]
 
