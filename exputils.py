@@ -87,7 +87,9 @@ class SternbergExperiment(object):
 		corr, rt = self.simple_trial(digits, probe, corr_resp,
 			fix_time=fix_time, wait_time=wait_time)
 
-		self.df.loc[trial,'ifcorrect'] = corr
+		self.df.loc[trial, 'fixTime'] = fix_time
+		self.df.loc[trial, 'waitTime'] = wait_time
+		self.df.loc[trial,'ifcorrect'] = int(corr)
 		self.df.loc[trial,'RT'] = rt
 
 	def simple_trial(self, digits, probe, corr_resp,
