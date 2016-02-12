@@ -63,6 +63,11 @@ class SternbergExperiment(object):
 		self.digits = [visual.TextStim(self.window, text=str(x),
 			height=self.settings['digits']['height']) for x in range(10)]
 
+	def get_random_time(self, time, key):
+		if time == None:
+			time = random.randint(*self.times[key])
+		return time
+
 	def run_trials(self, trials):
 		for t in trials:
 			self.show_trial(t)
@@ -94,6 +99,18 @@ class SternbergExperiment(object):
 			corr = False
 			rt = np.nan
 		return corr, rt
+
+	def show_fix(self, fix_time=None):
+		fix_time = self.get_random_time(fix_time, 'fix')
+		if isinstance(self.fix, list):
+			for t in range(fix_time):
+				for el in self.fix:
+					el.draw()
+				self.window.flip()
+		else:
+			for t in range(fix_time):
+				self.fix.draw()
+				self.window.flip()
 
 	def show_digits(self, show_digits):
 		for d in show_digits:
