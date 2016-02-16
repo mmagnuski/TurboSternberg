@@ -74,13 +74,13 @@ class SternbergExperiment(object):
 
 	def show_all_trials(self):
 			trials_without_break = 0
-			self.present_break()
 			self.show_keymap()
 			for t in range(1, self.num_trials+1):
 				self.show_trial(t)
 				self.save_data()
 				trials_without_break += 1
 				if trials_without_break >= self.settings['break_every_trials']:
+					trials_without_break = 0
 					self.present_break()
 					self.show_keymap()
 			core.quit()
