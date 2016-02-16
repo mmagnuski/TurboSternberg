@@ -31,6 +31,9 @@ fixation:
 digits:
    height: 5
 
+break_every_trials: 1
+tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę.\nMożesz teraz mrugać i ruszać się do woli.\nAby przejść dalej naciśnij dowolny klawisz.
+
 quit:
    enable: True
    button: q

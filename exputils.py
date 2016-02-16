@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from __future__ import division, print_function
 
 import os
@@ -8,7 +9,7 @@ import random
 import numpy as np
 import pandas as pd
 
-from psychopy import visual, event, core
+from psychopy import visual, event, core, gui
 
 # TODOs:
 # - [ ] add fixation cross
@@ -57,6 +58,7 @@ class SternbergExperiment(object):
 
 		self.subject_id = 'test_subject'
 		self.create_stimuli()
+		self.num_trials = self.df.shape[0]
 
 	def create_stimuli(self):
 		# create some stimuli
@@ -68,6 +70,19 @@ class SternbergExperiment(object):
 		if time == None:
 			time = random.randint(*self.times[key])
 		return time
+
+	def show_all_trials(self):
+			trials_without_break = 0
+			self.present_break()
+			self.show_keymap()
+			for t in range(1, self.num_trials+1):
+				self.show_trial(t)
+				self.save_data()
+				trials_without_break += 1
+				if trials_without_break >= self.settings['break_every_trials']:
+					self.present_break()
+					self.show_keymap()
+			core.quit()
 
 	def run_trials(self, trials):
 		for t in trials:
@@ -170,10 +185,46 @@ class SternbergExperiment(object):
 			if self.quitopt['button'] in key:
 				core.quit()
 
-	def save_data(self, path):
-		full_path = os.path.join(path, self.subject_id)
+	def save_data(self):
+		full_path = os.path.join('data', self.subject_id)
 		self.df.to_csv(full_path + '.csv')
 		self.df.to_excel(full_path + '.xls')
+
+	def present_break(self):
+		text = self.settings['tekst_przerwy']
+		text = text.replace('\\n', '\n')
+		text = visual.TextStim(self.window, text=text)
+		k = False
+		while not k:
+			text.draw()
+			self.window.flip()
+			k = event.getKeys()
+			self.check_quit(key=k)
+
+	def show_keymap(self):
+		args = {'units': 'deg'}
+		show_map = {k: bool_to_pl(v)
+			for k, v in six.iteritems(self.resp_mapping)}
+		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
+			show_map['f'], show_map['j'])
+		stim = visual.TextStim(self.window, text=text, **args)
+		stim.draw()
+		self.window.flip()
+		k = event.waitKeys()
+		self.check_quit(key=k)
+
+	def get_subject_id(self):
+		myDlg = gui.Dlg(title="Subject Info", size = (800,600))
+		myDlg.addText('Informacje o osobie badanej')
+		myDlg.addField('ID:')
+		myDlg.addField('wiek:', 30)
+		myDlg.addField(u'płeć:', choices=[u'kobieta', u'mężczyzna'])
+		myDlg.show()  # show dialog and wait for OK or Cancel
+
+		if myDlg.OK:  # Ok was pressed
+			self.subject_id = myDlg.data
+		else:
+			core.quit()
 
 
 # stimuli
@@ -266,3 +317,11 @@ def shuffle_df(df, cutto=None):
 
 def other_digits(digits):
 	return [x for x in range(10) if x not in digits]
+
+
+def bool_to_pl(b):
+	assert isinstance(b, bool)
+	if b:
+		return u'prawda'
+	else:
+		return u'fałsz'
