@@ -56,7 +56,8 @@ class SternbergExperiment(object):
 		self.clock = core.Clock()
 		self.current_trial = 0
 
-		self.subject_id = 'test_subject'
+		self.subject = dict()
+		self.subject['id'] = 'test_subject'
 		self.create_stimuli()
 		self.num_trials = self.df.shape[0]
 
@@ -186,7 +187,7 @@ class SternbergExperiment(object):
 				core.quit()
 
 	def save_data(self):
-		full_path = os.path.join('data', self.subject_id)
+		full_path = os.path.join('data', self.subject['id'])
 		self.df.to_csv(full_path + '.csv')
 		self.df.to_excel(full_path + '.xls')
 
@@ -222,7 +223,9 @@ class SternbergExperiment(object):
 		myDlg.show()  # show dialog and wait for OK or Cancel
 
 		if myDlg.OK:  # Ok was pressed
-			self.subject_id = myDlg.data
+			self.subject['id'] = myDlg.data[0]
+			self.subject['age'] = myDlg.data[1]
+			self.subject['sex'] = myDlg.data[2]
 		else:
 			core.quit()
 
