@@ -328,3 +328,52 @@ def bool_to_pl(b):
 		return u'prawda'
 	else:
 		return u'fałsz'
+
+
+class Instructions:
+	def __init__(self, win, instrfiles):
+		self.win = win
+		self.nextpage   = 0
+		self.navigation = {'left': 'prev', 'right': 'next',
+			'space': 'next'}
+
+		# get instructions from file:
+		self.stop_at_page = len(self.pages)
+		self.imagefiles = instrfiles
+		self.images = []
+		self.generate_images()
+
+	def generate_images(self):
+		self.images = [visual.ImageStim(self.win, image=f,
+			units='pix', interpolate=True) for f in self.imagefiles]
+
+	def present(self, start=None, stop=None):
+		if not isinstance(start, int):
+			start = self.nextpage
+		if not isinstance(stop, int):
+			stop = len(self.pages)
+
+		# show pages:
+		self.nextpage = start
+		while self.nextpage < stop:
+			# create page elements
+			self.create_page()
+
+			for it in self.pageitems:
+				it.draw()
+			self.win.flip()
+
+			# wait for response
+			k = event.waitKeys(keyList=self.navigation.keys())[0]
+			action = self.navigation[k]
+
+			# go next/prev according to the response
+			if action == 'next':
+				self.nextpage += 1
+			else:
+				self.nextpage = max(0, self.nextpage - 1)
+
+	def create_page(self, page_num=None):
+		if not isinstance(page_num, int):
+			page_num = self.nextpage
+		self.pageitems = [self.imagefiles[page_num]]
