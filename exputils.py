@@ -76,6 +76,14 @@ class SternbergExperiment(object):
 		self.stim['feedback_incorrect'] = fix(self.window, height=self.settings['feedback_circle_radius'],
 			color=feedback_colors[1,:])
 
+	def set_window(self, window):
+		self.window = window
+		self.fix.win = window
+		for d in self.digits:
+			d.win = window
+		for st in self.stim.values():
+			st.win = window
+
 	def get_random_time(self, time, key):
 		if time == None:
 			time = random.randint(*self.times[key])
