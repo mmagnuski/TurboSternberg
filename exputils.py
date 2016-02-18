@@ -141,9 +141,14 @@ class SternbergExperiment(object):
 			key, rt = resp
 			corr = self.resp_mapping[key] == corr_resp
 		else:
-			corr = False
-			rt = np.nan
-		return corr, rt
+
+	def show_feedback(self, corr):
+		corr = int(corr)
+		stims = ['feedback_incorrect', 'feedback_correct']
+		fdb = [self.stim[s] for s in stims][corr]
+		fdb.draw()
+		self.window.flip()
+		core.wait(0.7)
 
 	def show_fix(self, fix_time=None):
 		fix_time = self.get_random_time(fix_time, 'fix')
