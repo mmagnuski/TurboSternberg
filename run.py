@@ -21,7 +21,7 @@ else:
 window = visual.Window(monitor=monitor, units="deg",
 	fullscr=False, size=[1200,800])
 
-exp = SternbergExperiment(window, "parameters.yaml")
+exp = SternbergExperiment(window, "settings.yaml")
 exp.get_subject_id()
 
 window = visual.Window(monitor=monitor, units="deg", fullscr=True)

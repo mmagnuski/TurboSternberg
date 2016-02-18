@@ -11,7 +11,7 @@ triggers:
 loads: [2,4,6]
 trials_per_load: 15
 fixation_during_wait: True
-text_size: 2.5
+text_size: 1.5
 
 # times
 # inter - czas odstępu między cyframi
