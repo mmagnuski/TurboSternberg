@@ -235,7 +235,7 @@ class SternbergExperiment(object):
 			self.check_quit(key=k)
 
 	def show_keymap(self):
-		args = {'units': 'deg'}
+		args = {'units': 'deg', 'height':self.settings['text_size']}
 		show_map = {k: bool_to_pl(v)
 			for k, v in six.iteritems(self.resp_mapping)}
 		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
@@ -356,10 +356,7 @@ def other_digits(digits):
 
 def bool_to_pl(b):
 	assert isinstance(b, bool)
-	if b:
-		return u'prawda'
-	else:
-		return u'fałsz'
+	return ['TAK', 'NIE'][int(b)]
 
 
 class Instructions:
