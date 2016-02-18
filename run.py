@@ -50,8 +50,11 @@ instr.present(stop=4)
 # training
 for i in range(1, 16):
     exp.show_trial(i, feedback=True)
+    if i > 1 and exp.df.loc[i, 'ifcorrect'] == 0:
+        exp.show_keymap()
 exp.create_trials()
 
 instr.present(stop=5)
 
 exp.show_all_trials()
+instr.present()
