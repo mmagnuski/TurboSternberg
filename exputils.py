@@ -181,7 +181,7 @@ class SternbergExperiment(object):
 
 	def show_digits(self, show_digits):
 		for d in show_digits:
-			self.set_trigger('digit'+d)
+			self.set_trigger('digit'+str(d))
 			for t in range(self.times['digit']):
 				self.digits[d].draw()
 				self.window.flip()
@@ -199,8 +199,8 @@ class SternbergExperiment(object):
 			for d in range(wait_time):
 				self.window.flip()
 
-		ask_digit = self.digits[ask_digit]
-		self.set_trigger('probe'+ask_digit)
+		ask_digit_stim = self.digits[ask_digit]
+		self.set_trigger('probe'+str(ask_digit))
 		ask_digit_stim.color = "yellow"
 		ask_digit_stim.draw()
 		self.window.flip()
