@@ -162,23 +162,31 @@ class SternbergExperiment(object):
 		core.wait(0.7)
 
 	def show_fix(self, fix_time=None):
-		fix_time = self.get_random_time(fix_time, 'fix')
+		if fix_time is None:
+			fix_time = self.get_random_time(fix_time, 'fix')
+		self.set_trigger(self.triggers['fix'])
 		if isinstance(self.fix, list):
 			for t in range(fix_time):
+				if t == 2:
+					self.set_trigger(0)
 				for el in self.fix:
 					el.draw()
 				self.window.flip()
 		else:
 			for t in range(fix_time):
+				if t == 2:
+					self.set_trigger(0)
 				self.fix.draw()
 				self.window.flip()
 
 	def show_digits(self, show_digits):
 		for d in show_digits:
+			self.set_trigger('digit'+d)
 			for t in range(self.times['digit']):
 				self.digits[d].draw()
 				self.window.flip()
 
+			self.set_trigger(0)
 			for t in range(self.times['inter']):
 				self.window.flip()
 
@@ -186,24 +194,29 @@ class SternbergExperiment(object):
 		wait_time = self.get_random_time(wait_time, 'wait')
 
 		if self.settings['fixation_during_wait']:
-			for d in range(wait_time):
-				self.fix.draw()
-				self.window.flip()
+			self.show_fix(fix_time=wait_time)
 		else:
 			for d in range(wait_time):
 				self.window.flip()
 
 		ask_digit = self.digits[ask_digit]
-		ask_digit.color = "yellow"
-		ask_digit.draw()
+		self.set_trigger('probe'+ask_digit)
+		ask_digit_stim.color = "yellow"
+		ask_digit_stim.draw()
 		self.window.flip()
-		ask_digit.color = "white"
+		ask_digit_stim.color = "white"
 
 		if get_resp:
 			self.clock.reset()
 			resp = event.waitKeys(maxWait=self.times['response'],
 				keyList=self.resp_keys, timeStamped=self.clock)
 			resp = resp[0] if resp is not None else resp
+
+		if self.send_triggers:
+			self.window.flip()
+			self.set_trigger(0)
+			self.window.flip()
+		if get_resp:
 			return resp
 
 	def check_quit(self, key=None):
@@ -263,20 +276,32 @@ class SternbergExperiment(object):
 			core.quit()
 
 	def set_up_ports(self):
-		if self.settings['send_triggers']:
+		if self.send_triggers:
 			try:
 				from ctypes import windll
-				windll.InpOut32(port_code, 111)
+				windll.InpOut32(self.port_code, 111)
+				core.wait(0.1)
+				windll.InpOut32(self.port_code, 111)
 			except:
 				warnings.warn('Could not send test trigger. :(')
-				self.settings['send_triggers'] = False
+				self.send_triggers = False
 
 	# send trigger could be lower-level
 	# set trigger - higher level
-	def send_trigger(self, code, clock=None):
-		if clock:
-			clock.reset()
-		windll.inpout32.Out32(self.settings['port_address'], code)
+	def send_trigger(self, code):
+		windll.inpout32.Out32(self.port_address, code)
+
+	def set_trigger(self, event):
+		if self.send_triggers:
+			if isinstance(event, int):
+				self.window.callOnFlip(self.send_trigger, event)
+			else:
+				if 'digit' in event:
+					trig = self.triggers['digit'][int(event[-1])]
+					self.window.callOnFlip(self.send_trigger, trig)
+				if 'probe' in event:
+					trig = self.triggers['probe'][int(event[-1])]
+					self.window.callOnFlip(self.send_trigger, trig)
 
 
 # stimuli
