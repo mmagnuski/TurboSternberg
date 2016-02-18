@@ -55,7 +55,7 @@ class SternbergExperiment(object):
 		self.num_trials = self.df.shape[0]
 
 		self.send_triggers = self.settings['send_triggers']
-		self.port_code = self.settings['port_code']
+		self.port_adress = self.settings['port_adress']
 		self.triggers = self.settings['triggers']
 		self.set_up_ports()
 
@@ -279,9 +279,9 @@ class SternbergExperiment(object):
 		if self.send_triggers:
 			try:
 				from ctypes import windll
-				windll.InpOut32(self.port_code, 111)
+				windll.InpOut32(self.port_adress, 111)
 				core.wait(0.1)
-				windll.InpOut32(self.port_code, 111)
+				windll.InpOut32(self.port_adress, 111)
 			except:
 				warnings.warn('Could not send test trigger. :(')
 				self.send_triggers = False
