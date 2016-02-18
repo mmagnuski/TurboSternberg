@@ -27,6 +27,7 @@ fixation:
    width: 0.1
 digits:
    height: 5
+feedback_circle_radius: 7
 
 break_every_trials: 10
 tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę.\nMożesz teraz mrugać i ruszać się do woli.\nAby przejść dalej naciśnij dowolny klawisz.

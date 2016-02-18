@@ -69,6 +69,12 @@ class SternbergExperiment(object):
 		self.fix = fix(self.window, **self.settings['fixation'])
 		self.digits = [visual.TextStim(self.window, text=str(x),
 			height=self.settings['digits']['height']) for x in range(10)]
+		self.stim = dict()
+		feedback_colors = (np.array([[0,147,68], [190, 30, 45]], dtype='float') / 255 - 0.5) * 2
+		self.stim['feedback_correct'] = fix(self.window, height=self.settings['feedback_circle_radius'],
+			color=feedback_colors[0,:])
+		self.stim['feedback_incorrect'] = fix(self.window, height=self.settings['feedback_circle_radius'],
+			color=feedback_colors[1,:])
 
 	def get_random_time(self, time, key):
 		if time == None:
