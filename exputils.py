@@ -6,6 +6,7 @@ import six
 import yaml
 import types
 import random
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -260,6 +261,22 @@ class SternbergExperiment(object):
 			self.subject['sex'] = myDlg.data[2]
 		else:
 			core.quit()
+
+	def set_up_ports(self):
+		if self.settings['send_triggers']:
+			try:
+				from ctypes import windll
+				windll.InpOut32(port_code, 111)
+			except:
+				warnings.warn('Could not send test trigger. :(')
+				self.settings['send_triggers'] = False
+
+	# send trigger could be lower-level
+	# set trigger - higher level
+	def send_trigger(self, code, clock=None):
+		if clock:
+			clock.reset()
+		windll.inpout32.Out32(self.settings['port_address'], code)
 
 
 # stimuli

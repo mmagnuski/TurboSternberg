@@ -1,4 +1,12 @@
 
+# port and triggers
+send_triggers: False
+port_adress: x0H43
+triggers:
+   fix: 11
+   digit: [10,1,2,3,4,5,6,7,8,9]
+   probe: [20,11,12,13,14,15,16,17,18,19]
+
 # loads and trials
 loads: [2,4,6]
 trials_per_load: 15
