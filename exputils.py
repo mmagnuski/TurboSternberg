@@ -398,7 +398,7 @@ def other_digits(digits):
 
 def bool_to_pl(b):
 	assert isinstance(b, bool)
-	return ['TAK', 'NIE'][int(b)]
+	return ['NIE', 'TAK'][int(b)]
 
 
 class Instructions:
