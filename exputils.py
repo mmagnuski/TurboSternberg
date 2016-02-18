@@ -54,6 +54,11 @@ class SternbergExperiment(object):
 		self.create_stimuli()
 		self.num_trials = self.df.shape[0]
 
+		self.send_triggers = self.settings['send_triggers']
+		self.port_code = self.settings['port_code']
+		self.triggers = self.settings['triggers']
+		self.set_up_ports()
+
 	def create_trials(self):
 		self.df = create_empty_df(len(self.loads) * self.trials_per_load)
 		load_df = generate_loads(self.loads, self.trials_per_load)
