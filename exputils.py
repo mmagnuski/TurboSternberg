@@ -110,7 +110,7 @@ class SternbergExperiment(object):
 				self.times['inter_trial'][1]+0.0001)
 			core.wait(round(break_time, 3))
 
-	def show_trial(self, trial):
+	def show_trial(self, trial, feedback=False):
 		digits = list(map(int, self.df.loc[trial, 'digits'].split()))
 		probe = self.df.loc[trial, 'probe']
 		corr_resp = self.df.loc[trial, 'isin']
@@ -120,7 +120,7 @@ class SternbergExperiment(object):
 			for k in ['fix', 'wait']]
 
 		corr, rt = self.simple_trial(digits, probe, corr_resp,
-			fix_time=fix_time, wait_time=wait_time)
+			fix_time=fix_time, wait_time=wait_time, feedback=feedback)
 
 		self.df.loc[trial, 'fixTime'] = fix_time
 		self.df.loc[trial, 'waitTime'] = wait_time
@@ -128,19 +128,28 @@ class SternbergExperiment(object):
 		self.df.loc[trial,'RT'] = rt
 
 	def simple_trial(self, digits, probe, corr_resp,
-		fix_time=None, wait_time=None):
+		fix_time=None, wait_time=None, get_resp=True, feedback=False):
 
 		self.show_fix(fix_time=fix_time)
 		self.show_digits(digits)
 		self.check_quit()
-		resp = self.wait_and_ask(probe, wait_time=wait_time)
+		resp = self.wait_and_ask(probe, wait_time=wait_time,
+			get_resp=get_resp)
 		self.check_quit(key=resp)
 
 		# check response
-		if len(resp) > 0:
-			key, rt = resp
-			corr = self.resp_mapping[key] == corr_resp
+		if get_resp:
+			if len(resp) > 0:
+				key, rt = resp
+				corr = self.resp_mapping[key] == corr_resp
+			else:
+				corr = False
+				rt = np.nan
+			if feedback:
+				self.show_feedback(corr)
+			return corr, rt
 		else:
+			return False, np.nan
 
 	def show_feedback(self, corr):
 		corr = int(corr)
@@ -171,7 +180,7 @@ class SternbergExperiment(object):
 			for t in range(self.times['inter']):
 				self.window.flip()
 
-	def wait_and_ask(self, ask_digit, wait_time=None):
+	def wait_and_ask(self, ask_digit, wait_time=None, get_resp=True):
 		wait_time = self.get_random_time(wait_time, 'wait')
 
 		if self.settings['fixation_during_wait']:
@@ -186,14 +195,14 @@ class SternbergExperiment(object):
 		ask_digit.color = "yellow"
 		ask_digit.draw()
 		self.window.flip()
-		self.clock.reset()
-
-		resp = event.waitKeys(maxWait=self.times['response'],
-							  keyList=self.resp_keys,
-					  		  timeStamped=self.clock)
-		resp = resp[0] if resp is not None else resp
 		ask_digit.color = "white"
-		return resp
+
+		if get_resp:
+			self.clock.reset()
+			resp = event.waitKeys(maxWait=self.times['response'],
+				keyList=self.resp_keys, timeStamped=self.clock)
+			resp = resp[0] if resp is not None else resp
+			return resp
 
 	def check_quit(self, key=None):
 		if self.quitopt['enable']:
