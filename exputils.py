@@ -48,10 +48,7 @@ class SternbergExperiment(object):
 			self.resp_keys.append(self.quitopt['button'])
 
 		# dataframe
-		self.df = create_empty_df(len(self.loads) * self.trials_per_load)
-		load_df = generate_loads(self.loads, self.trials_per_load)
-		self.df.loc[:, load_df.columns] = load_df
-		self.df = self.df.set_index('trial', drop=True)
+		self.create_trials()
 
 		self.clock = core.Clock()
 		self.current_trial = 0
@@ -60,6 +57,12 @@ class SternbergExperiment(object):
 		self.subject['id'] = 'test_subject'
 		self.create_stimuli()
 		self.num_trials = self.df.shape[0]
+
+	def create_trials(self):
+		self.df = create_empty_df(len(self.loads) * self.trials_per_load)
+		load_df = generate_loads(self.loads, self.trials_per_load)
+		self.df.loc[:, load_df.columns] = load_df
+		self.df = self.df.set_index('trial', drop=True)
 
 	def create_stimuli(self):
 		# create some stimuli
