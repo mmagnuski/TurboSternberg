@@ -279,9 +279,10 @@ class SternbergExperiment(object):
 		if self.send_triggers:
 			try:
 				from ctypes import windll
-				windll.InpOut32(self.port_adress, 111)
+				windll.inpout32.Out32(self.port_adress, 111)
 				core.wait(0.1)
-				windll.InpOut32(self.port_adress, 111)
+				windll.inpout32.Out32(self.port_adress, 0)
+				self.inpout32 = windll.inpout32
 			except:
 				warnings.warn('Could not send test trigger. :(')
 				self.send_triggers = False
@@ -289,7 +290,7 @@ class SternbergExperiment(object):
 	# send trigger could be lower-level
 	# set trigger - higher level
 	def send_trigger(self, code):
-		windll.inpout32.Out32(self.port_address, code)
+		self.inpout32.Out32(self.port_address, code)
 
 	def set_trigger(self, event):
 		if self.send_triggers:
