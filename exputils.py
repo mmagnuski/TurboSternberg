@@ -52,7 +52,7 @@ class SternbergExperiment(object):
 		self.num_trials = self.df.shape[0]
 
 		self.send_triggers = self.settings['send_triggers']
-		self.port_adress = self.settings['port_adress']
+		self.port_adress = int(self.settings['port_adress'], base=16)
 		self.triggers = self.settings['triggers']
 		self.set_up_ports()
 
@@ -300,7 +300,7 @@ class SternbergExperiment(object):
 	# send trigger could be lower-level
 	# set trigger - higher level
 	def send_trigger(self, code):
-		self.inpout32.Out32(self.port_address, code)
+		self.inpout32.Out32(self.port_adress, code)
 
 	def set_trigger(self, event):
 		if self.send_triggers:
