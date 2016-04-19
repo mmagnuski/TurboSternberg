@@ -30,18 +30,15 @@ class SternbergExperiment(object):
 		self.loads = settings['loads']
 		self.trials_per_load = settings['trials_per_load']
 
-		self.resp_keys = settings['resp_keys']
 		self.times = s2frames(settings['times'], self.frame_time)
 		self.times['inter_trial'] = settings['times']['inter_trial']
 		self.settings = settings
 
-		rnd = random.sample([True, False], 1)[0]
-		self.resp_mapping = {self.resp_keys[0]: rnd}
-		self.resp_mapping.update({self.resp_keys[1]: not rnd})
-
+		self.resp_keys = settings['resp_keys']
 		self.quitopt = settings['quit']
 		if self.quitopt['enable']:
 			self.resp_keys.append(self.quitopt['button'])
+		self.set_resp()
 
 		# dataframe
 		self.create_trials()
@@ -58,6 +55,19 @@ class SternbergExperiment(object):
 		self.port_adress = self.settings['port_adress']
 		self.triggers = self.settings['triggers']
 		self.set_up_ports()
+
+	def set_resp(self, true_key=None):
+		if self.quitopt['button'] in self.resp_keys:
+			self.resp_keys.remove(self.quitopt['button'])
+		if true_key is None:
+			rnd = random.sample([True, False], 1)[0]
+			self.resp_mapping = {self.resp_keys[0]: rnd}
+			self.resp_mapping.update({self.resp_keys[1]: not rnd})
+		else:
+			true_ind = self.resp_keys.index(true_key)
+			self.resp_mapping = {k: i == true_ind for i, k in enumerate(self.resp_keys)}
+		if self.quitopt['enable']:
+			self.resp_keys.append(self.quitopt['button'])
 
 	def create_trials(self):
 		self.df = create_empty_df(len(self.loads) * self.trials_per_load)
