@@ -29,6 +29,12 @@ waitText = visual.TextStim(window, text=u'Proszę czekać...', height=2)
 exp.set_window(window)
 waitText.draw(); window.flip()
 
+# hide mouse
+window.setMouseVisible(False)
+
+# at least for now:
+exp.set_resp(true_key='f')
+
 # set correct instruction pictures
 instr_dir = os.path.join(os.getcwd(), 'instr')
 instr = os.listdir(instr_dir)
