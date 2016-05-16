@@ -270,20 +270,19 @@ class SternbergExperiment(object):
 		k = event.waitKeys()
 		self.check_quit(key=k)
 
-	def get_subject_id(self):
-		myDlg = gui.Dlg(title="Subject Info", size = (800,600))
-		myDlg.addText('Informacje o osobie badanej')
-		myDlg.addField('ID:')
-		myDlg.addField('wiek:', 30)
-		myDlg.addField(u'płeć:', choices=[u'kobieta', u'mężczyzna'])
-		myDlg.show()  # show dialog and wait for OK or Cancel
+	def set_subject_id(self, subject_id=None):
+		if subject_id is None:
+			myDlg = gui.Dlg(title="Subject Info", size = (800,600))
+			myDlg.addText('Informacje o osobie badanej')
+			myDlg.addField('ID:')
+			myDlg.show()  # show dialog and wait for OK or Cancel
 
-		if myDlg.OK:  # Ok was pressed
-			self.subject['id'] = myDlg.data[0]
-			self.subject['age'] = myDlg.data[1]
-			self.subject['sex'] = myDlg.data[2]
+			if myDlg.OK:  # Ok was pressed
+				self.subject['id'] = myDlg.data[0]
+			else:
+				core.quit()
 		else:
-			core.quit()
+			self.subject['id'] = subject_id
 
 	def set_up_ports(self):
 		if self.send_triggers:
