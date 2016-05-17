@@ -112,7 +112,6 @@ class SternbergExperiment(object):
 					trials_without_break = 0
 					self.present_break()
 					self.show_keymap()
-			core.quit()
 
 	def run_trials(self, trials):
 		for t in trials:
