@@ -72,7 +72,7 @@ def run(window=None, subject_id=None, true_key='f',
     instr.present(stop=4)
 
     # training
-    for i in range(1, 16):
+    for i in range(1, exp.settings['training_trials'] + 1):
         exp.show_trial(i, feedback=True)
         if i > 1 and exp.df.loc[i, 'ifcorrect'] == 0:
             exp.show_keymap()
