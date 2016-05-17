@@ -265,6 +265,7 @@ class SternbergExperiment(object):
 			for k, v in six.iteritems(self.resp_mapping)}
 		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
 			show_map['f'], show_map['j'])
+		text += u'\nAby przejść dalej naciśnij dowolny klawisz.'
 		stim = visual.TextStim(self.window, text=text, **args)
 		stim.draw()
 		self.window.flip()
