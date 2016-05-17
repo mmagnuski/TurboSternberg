@@ -50,7 +50,7 @@ def run(window=None, subject_id=None, true_key='f',
     waitText.draw(); window.flip()
 
     # hide mouse
-    window.setMouseVisible(False)
+    window.mouseVisible = False
 
     # at least for now:
     exp.set_resp(true_key=true_key)
