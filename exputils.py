@@ -220,6 +220,8 @@ class SternbergExperiment(object):
 			resp = event.waitKeys(maxWait=self.times['response'],
 				keyList=self.resp_keys, timeStamped=self.clock)
 			resp = resp[0] if resp is not None else resp
+		else:
+			core.wait(0.1)
 
 		if self.send_triggers:
 			self.window.flip()
