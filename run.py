@@ -34,19 +34,17 @@ def run(window=None, subject_id=None, true_key='f',
     file_path = file_path.replace(':', ':\\')
     os.chdir(file_path)
 
-    # create temporary window
-    monitor = get_screen(scr_dist=scr_dist)
-    temp_window = visual.Window(monitor=monitor, units="deg",
-        fullscr=False, size=[1200,800])
+    # create window if not given
+    if window is None:
+        monitor = get_screen(scr_dist=scr_dist)
+        window = visual.Window(monitor=monitor, units="deg", fullscr=True)
 
     # use temp window to init sternberg exp
-    exp = SternbergExperiment(temp_window, "settings.yaml")
+    exp = SternbergExperiment(window, "settings.yaml")
     exp.set_subject_id(subject_id=subject_id)
 
-    if window is None:
-        window = visual.Window(monitor=monitor, units="deg", fullscr=True)
     waitText = visual.TextStim(window, text=u'Proszę czekać...', height=2)
-    exp.set_window(window)
+    # exp.set_window(window)
     waitText.draw(); window.flip()
 
     # hide mouse
