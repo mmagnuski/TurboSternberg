@@ -83,7 +83,7 @@ def run(window=None, subject_id=None, true_key='f',
     # main exp
     exp.show_all_trials()
     instr.present()
-
+    return exp
 
 if __name__ == '__main__':
     run()
