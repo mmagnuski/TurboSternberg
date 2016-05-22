@@ -211,6 +211,8 @@ class SternbergExperiment(object):
 
 		# clear keyboard buffer
 		self.check_quit()
+
+		# display probe
 		ask_digit_stim = self.digits[ask_digit]
 		self.set_trigger('probe'+str(ask_digit))
 		ask_digit_stim.color = "yellow"
@@ -255,12 +257,9 @@ class SternbergExperiment(object):
 		text = self.settings['tekst_przerwy']
 		text = text.replace('\\n', '\n')
 		text = visual.TextStim(self.window, text=text)
-		k = False
-		while not k:
-			text.draw()
-			self.window.flip()
-			k = event.getKeys()
-			self.check_quit(key=k)
+		text.draw(); self.window.flip()
+		k = event.waitKeys()
+		self.check_quit(key=k)
 
 	def show_keymap(self):
 		args = {'units': 'deg', 'height':self.settings['text_size']}

@@ -40,7 +40,7 @@ digits:
 feedback_circle_radius: 7
 
 break_every_trials: 10
-tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę.\nMożesz teraz mrugać i ruszać się do woli.\nAby przejść dalej naciśnij dowolny klawisz.
+tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę.\nMożesz teraz mrugać i ruszać się do woli.\n\nAby przejść dalej naciśnij dowolny klawisz.
 
 quit:
    enable: True
