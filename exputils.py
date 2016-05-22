@@ -151,7 +151,7 @@ class SternbergExperiment(object):
 
 		# check response
 		if get_resp:
-			if len(resp) > 0:
+			if resp is not None and len(resp) > 0:
 				key, rt = resp
 				corr = self.resp_mapping[key] == corr_resp
 			else:
