@@ -32,6 +32,7 @@ class SternbergExperiment(object):
 
 		self.times = s2frames(settings['times'], self.frame_time)
 		self.times['inter_trial'] = settings['times']['inter_trial']
+		self.times['response'] = settings['times']['response']
 		self.settings = settings
 
 		self.resp_keys = settings['resp_keys']
