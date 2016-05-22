@@ -208,6 +208,8 @@ class SternbergExperiment(object):
 			for d in range(wait_time):
 				self.window.flip()
 
+		# clear keyboard buffer
+		self.check_quit()
 		ask_digit_stim = self.digits[ask_digit]
 		self.set_trigger('probe'+str(ask_digit))
 		ask_digit_stim.color = "yellow"
