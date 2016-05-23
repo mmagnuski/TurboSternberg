@@ -15,15 +15,7 @@ from exputils import SternbergExperiment, Instructions
 scr_dist = 60
 
 def get_screen(scr_dist=scr_dist):
-    # check correct monitor type
-    monitorList = monitors.getAllMonitors()
-    if 'BENQ-XL2411' in monitorList:
-        monitor = monitors.Monitor('BENQ-XL2411', width=53.,
-            distance=scr_dist)
-        monitor.setSizePix([1920, 1080])
-    else:
-        monitor = 'testMonitor'
-    return monitor
+    return 'testMonitor'
 
 
 def run(window=None, subject_id=None, true_key='f',
