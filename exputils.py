@@ -257,6 +257,7 @@ class SternbergExperiment(object):
 		text = self.settings['tekst_przerwy']
 		text = text.replace('\\n', '\n')
 		text = visual.TextStim(self.window, text=text)
+		text.wrapWidth = 20
 		text.draw(); self.window.flip()
 		k = event.waitKeys()
 		self.check_quit(key=k)
@@ -265,12 +266,15 @@ class SternbergExperiment(object):
 		args = {'units': 'deg', 'height':self.settings['text_size']}
 		show_map = {k: bool_to_pl(v)
 			for k, v in six.iteritems(self.resp_mapping)}
+
+		# create text stim:
 		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
 			show_map['f'], show_map['j'])
-		text += u'\nAby przejść dalej naciśnij dowolny klawisz.'
-		stim = visual.TextStim(self.window, text=text, **args)
-		stim.draw()
-		self.window.flip()
+		text += u'\n\nAby przejść dalej naciśnij dowolny klawisz.'
+		text = visual.TextStim(self.window, text=text, **args)
+		text.wrapWidth = 20
+		# draw and wait for key press
+		text.draw(); self.window.flip()
 		k = event.waitKeys()
 		self.check_quit(key=k)
 
