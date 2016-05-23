@@ -9,7 +9,7 @@ triggers:
 
 # loads and trials
 loads: [2, 3, 4, 5 , 6, 7]
-trials_per_load: 50
+trials_per_load: 45
 training_trials: 10
 fixation_during_wait: True
 text_size: 1.5
